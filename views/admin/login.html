@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - GIYU HOST</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+        :root {
+            --primary-blue: #0A7AFF; --secondary-blue: #3498DB; --accent-glow: #00E0FF;
+            --cta-color: #FFC107; --cta-hover-color: #FFB300;
+            --dark-bg-primary: #12121F; --dark-bg-secondary: #1A1A2E; --dark-bg-tertiary: #24243D;
+            --text-primary: #E0E0E0; --text-secondary: #A0A0B0; --border-color: #33334D;
+            --shadow-light: rgba(0, 198, 255, 0.1); --border-radius: 8px; --font-main: 'Poppins', sans-serif;
+            --error-color: #e74c3c;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-main); background-color: var(--dark-bg-primary); color: var(--text-primary);
+            line-height: 1.7; display: flex; align-items: center; justify-content: center; min-height: 100vh;
+            padding: 20px; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+        }
+        .login-container {
+            background-color: var(--dark-bg-secondary); padding: 40px; border-radius: var(--border-radius);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4); width: 100%; max-width: 450px;
+            border-top: 5px solid var(--primary-blue);
+        }
+        .login-title {
+            font-size: 2.2em; color: var(--primary-blue); font-weight: 700; text-align: center;
+            margin-bottom: 30px; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .form-group { margin-bottom: 25px; }
+        .form-group label {
+            display: block; margin-bottom: 10px; font-weight: 500; color: var(--text-secondary);
+            font-size: 0.9em; display: flex; align-items: center; gap: 8px;
+        }
+        .form-group input[type="text"], .form-group input[type="email"], .form-group input[type="password"] {
+            width: 100%; padding: 14px; border: 1px solid var(--border-color);
+            border-radius: var(--border-radius); font-size: 1em; background-color: var(--dark-bg-tertiary);
+            color: var(--text-primary); transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-group input:focus {
+            border-color: var(--primary-blue); outline: none; box-shadow: 0 0 0 3px var(--shadow-light);
+        }
+        .btn-login {
+            display: block; width: 100%; background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue));
+            color: #fff; padding: 15px; text-decoration: none; border: none; border-radius: var(--border-radius);
+            font-weight: 600; font-size: 1.1em; cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px var(--shadow-light); text-align: center;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-login:hover {
+            background: linear-gradient(90deg, var(--secondary-blue), var(--primary-blue));
+            transform: translateY(-2px); box-shadow: 0 6px 20px var(--shadow-strong);
+        }
+        .error-message {
+            background-color: rgba(231, 76, 60, 0.1); border: 1px solid var(--error-color);
+            color: var(--error-color); padding: 12px; border-radius: var(--border-radius);
+            margin-bottom: 20px; text-align: center; font-size: 0.9em; display: none;
+        }
+        .error-message.show { display: block; }
+         .loading-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(18, 18, 31, 0.8); z-index: 3000; align-items: center; justify-content: center;
+        }
+        .loading-overlay.show { display: flex; }
+        .spinner {
+            width: 50px; height: 50px; border: 4px solid var(--dark-bg-tertiary);
+            border-top-color: var(--primary-blue); border-radius: 50%; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div></div>
+    <div class="login-container">
+        <h1 class="login-title"><i class="fas fa-ghost"></i>GIYU HOST Admin</h1>
+        <div class="error-message" id="errorMessage"></div>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="emailOrUsername"><i class="fas fa-user-shield"></i> Email atau Username</label>
+                <input type="text" id="emailOrUsername" name="emailOrUsername" required placeholder="admin@giyu.host">
+            </div>
+            <div class="form-group">
+                <label for="password"><i class="fas fa-key"></i> Password</label>
+                <input type="password" id="password" name="password" required placeholder="••••••••••">
+            </div>
+            <button type="submit" class="btn-login"><i class="fas fa-sign-in-alt"></i> Login</button>
+        </form>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const emailOrUsernameInput = document.getElementById('emailOrUsername');
+        const passwordInput = document.getElementById('password');
+        const errorMessageDiv = document.getElementById('errorMessage');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        function showLoading() { loadingOverlay.classList.add('show'); }
+        function hideLoading() { loadingOverlay.classList.remove('show'); }
+
+        if (localStorage.getItem('giyuAdminToken')) {
+            window.location.href = 'dashboard';
+        }
+
+        loginForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            errorMessageDiv.classList.remove('show');
+            errorMessageDiv.textContent = '';
+            showLoading();
+
+            const emailOrUsername = emailOrUsernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!emailOrUsername || !password) {
+                hideLoading();
+                errorMessageDiv.textContent = 'Email/Username dan Password tidak boleh kosong.';
+                errorMessageDiv.classList.add('show');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/login-admin', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ emailOrUsername, password })
+                });
+
+                const data = await response.json();
+                hideLoading();
+
+                if (response.ok && data.success && data.token) {
+                    localStorage.setItem('giyuAdminToken', data.token);
+                    localStorage.setItem('giyuAdminUser', JSON.stringify(data.user));
+                    window.location.href = 'dashboard';
+                } else {
+                    errorMessageDiv.textContent = data.message || 'Login gagal. Periksa kembali kredensial Anda.';
+                    errorMessageDiv.classList.add('show');
+                }
+            } catch (error) {
+                hideLoading();
+                console.error('Login error:', error);
+                errorMessageDiv.textContent = 'Terjadi kesalahan koneksi. Silakan coba lagi.';
+                errorMessageDiv.classList.add('show');
+            }
+        });
+    </script>
+</body>
+</html>

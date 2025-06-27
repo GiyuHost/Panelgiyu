@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan Aplikasi - GIYU HOST Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+        :root {
+            --primary-blue: #0A7AFF; --secondary-blue: #3498DB; --accent-glow: #00E0FF;
+            --cta-color: #FFC107; --delete-color: #e74c3c;
+            --dark-bg-primary: #12121F; --dark-bg-secondary: #1A1A2E; --dark-bg-tertiary: #24243D;
+            --text-primary: #E0E0E0; --text-secondary: #A0A0B0; --border-color: #33334D;
+            --shadow-light: rgba(0, 198, 255, 0.1); --border-radius: 8px; --font-main: 'Poppins', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-main); background-color: var(--dark-bg-primary); color: var(--text-primary);
+            line-height: 1.7; display: flex; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+        }
+        .sidebar {
+            width: 260px; background-color: var(--dark-bg-secondary); padding: 25px 0;
+            height: 100vh; position: fixed; top: 0; left: 0;
+            display: flex; flex-direction: column; box-shadow: 3px 0 15px rgba(0,0,0,0.2);
+        }
+        .sidebar-header { text-align: center; padding-bottom: 25px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); }
+        .sidebar-logo {
+            font-size: 1.8em; font-weight: 700; color: var(--primary-blue); text-decoration: none;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .sidebar-nav ul { list-style: none; }
+        .sidebar-nav ul li a {
+            display: flex; align-items: center; gap: 12px; padding: 15px 25px; color: var(--text-secondary);
+            text-decoration: none; font-weight: 500; font-size: 0.95em;
+            border-left: 3px solid transparent; transition: background-color 0.3s ease, color 0.3s ease, border-left-color 0.3s ease;
+        }
+        .sidebar-nav ul li a:hover, .sidebar-nav ul li a.active {
+            background-color: var(--dark-bg-tertiary); color: var(--accent-glow); border-left-color: var(--accent-glow);
+        }
+        .sidebar-footer { margin-top: auto; padding: 20px 25px; border-top: 1px solid var(--border-color); }
+        .logout-btn {
+            display: flex; align-items: center; gap: 10px; background-color: transparent; border: 1px solid var(--border-color);
+            color: var(--text-secondary); padding: 10px 15px; border-radius: var(--border-radius);
+            cursor: pointer; width: 100%; text-align: left; font-size: 0.9em; font-weight: 500;
+        }
+        .logout-btn:hover { background-color: var(--dark-bg-tertiary); color: var(--primary-blue); border-color: var(--primary-blue); }
+        .main-content {
+            margin-left: 260px; padding: 30px; width: calc(100% - 260px); overflow-y: auto; height: 100vh;
+        }
+        .page-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color);
+        }
+        .page-title { font-size: 2em; font-weight: 600; color: var(--text-primary); }
+        .settings-section {
+            background-color: var(--dark-bg-secondary); padding: 25px; border-radius: var(--border-radius);
+            margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .settings-section h3 {
+            font-size: 1.4em; color: var(--primary-blue); margin-bottom: 20px;
+            padding-bottom: 10px; border-bottom: 1px solid var(--border-color);
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-secondary); }
+        .form-group input[type="text"], .form-group input[type="url"], .form-group input[type="email"], .form-group input[type="password"], .form-group select, .form-group textarea {
+            width: 100%; padding: 12px; border: 1px solid var(--border-color);
+            border-radius: var(--border-radius); font-size: 1em; background-color: var(--dark-bg-tertiary);
+            color: var(--text-primary);
+        }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--primary-blue); outline: none; }
+        .form-group textarea { min-height: 80px; resize: vertical; }
+        .form-row { display: flex; gap: 20px; } .form-row .form-group { flex: 1; }
+        .btn-save-settings {
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue)); color: #fff;
+            padding: 10px 20px; border-radius: var(--border-radius); border: none; cursor: pointer;
+            font-weight: 500; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .list-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 12px 0; border-bottom: 1px dashed var(--border-color);
+        }
+        .list-item:last-child { border-bottom: none; }
+        .list-item-info strong { color: var(--accent-glow); }
+        .list-item-info span { color: var(--text-secondary); font-size: 0.9em; }
+        .btn-action-list { padding: 6px 10px; font-size: 0.9em; margin-left: 8px;}
+        .btn-edit { background-color: var(--cta-color); color: var(--dark-bg-primary); border:none; border-radius:var(--border-radius); }
+        .btn-delete { background-color: var(--delete-color); color: #fff; border:none; border-radius:var(--border-radius); }
+        .loading-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(18, 18, 31, 0.8); z-index: 3000; align-items: center; justify-content: center;
+        }
+        .loading-overlay.show { display: flex; }
+        .spinner {
+            width: 50px; height: 50px; border: 4px solid var(--dark-bg-tertiary);
+            border-top-color: var(--primary-blue); border-radius: 50%; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+         @media (max-width: 992px) { /* Adjustments for smaller sidebar */
+             .sidebar { width: 70px; }
+            .sidebar-logo span, .sidebar-nav ul li a span, .sidebar-footer .logout-btn span { display: none; }
+            .sidebar-logo i { margin-right: 0; }
+            .sidebar-nav ul li a { justify-content: center; padding: 15px 0; }
+            .sidebar-footer { padding: 20px 10px; }
+            .main-content { margin-left: 70px; width: calc(100% - 70px); }
+        }
+         @media (max-width: 768px) { /* Mobile adjustments */
+            body { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; position: static; flex-direction: row; align-items: center; padding: 0 15px; }
+            .sidebar-header { padding-bottom: 0; margin-bottom: 0; border-bottom: none; }
+            .sidebar-nav { flex-grow: 1; } .sidebar-nav ul { display: flex; justify-content: space-around; }
+            .sidebar-nav ul li { margin-left: 0; }
+            .sidebar-nav ul li a { border-left: none; border-bottom: 3px solid transparent; padding: 15px 10px; }
+            .sidebar-nav ul li a:hover, .sidebar-nav ul li a.active { border-bottom-color: var(--accent-glow); border-left-color:transparent;}
+            .sidebar-footer { display: none; }
+            .main-content { margin-left: 0; width: 100%; height: auto; }
+            .page-header { flex-direction: column; align-items: flex-start; gap: 10px;}
+            .form-row { flex-direction: column; gap: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div></div>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="dashboard" class="sidebar-logo"><i class="fas fa-ghost"></i> <span>GIYU Admin</span></a>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="dashboard"><i class="fas fa-tachometer-alt fa-fw"></i> <span>Dashboard</span></a></li>
+                <li><a href="products"><i class="fas fa-cubes fa-fw"></i> <span>Produk</span></a></li>
+                <li><a href="orders"><i class="fas fa-receipt fa-fw"></i> <span>Pesanan</span></a></li>
+                <li><a href="settings" class="active"><i class="fas fa-cog fa-fw"></i> <span>Pengaturan</span></a></li>
+            </ul>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="logout-btn" id="logoutButton"><i class="fas fa-sign-out-alt fa-fw"></i> <span>Logout</span></button>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="page-header">
+            <h1 class="page-title">Pengaturan Aplikasi</h1>
+        </header>
+
+        <section class="settings-section">
+            <h3><i class="fas fa-key"></i> API Tokens</h3>
+            <div id="apiTokenList"></div>
+            <form id="apiTokenForm" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top:20px;">
+                <input type="hidden" id="apiTokenProviderToEdit" name="providerToEdit">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="apiProvider">Provider</label>
+                        <select id="apiProvider" name="provider" required>
+                            <option value="cloudflare">Cloudflare</option>
+                            <option value="linode">Linode</option>
+                            <option value="digitalocean">DigitalOcean</option>
+                            <option value="pterodactyl">Pterodactyl</option>
+                            <option value="telegram">Telegram</option>
+                            <option value="other">Lainnya</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="apiTokenValue">Token / API Key</label>
+                        <input type="password" id="apiTokenValue" name="token" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                     <div class="form-group">
+                        <label for="apiUrl">API URL (Jika perlu, cth: Pterodactyl Panel URL)</label>
+                        <input type="url" id="apiUrl" name="apiUrl" placeholder="https://panel.domain.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="apiAccountEmail">Email Akun (Opsional)</label>
+                        <input type="email" id="apiAccountEmail" name="accountEmail" placeholder="admin@example.com">
+                    </div>
+                </div>
+                <button type="submit" class="btn-save-settings"><i class="fas fa-save"></i> Simpan API Token</button>
+            </form>
+        </section>
+
+        <section class="settings-section">
+            <h3><i class="fas fa-globe"></i> Pengaturan Domain (Subdomain)</h3>
+            <div id="domainSettingList"></div>
+            <form id="domainSettingForm" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top:20px;">
+                <input type="hidden" id="domainTldToEdit" name="tldToEdit">
+                 <div class="form-row">
+                    <div class="form-group">
+                        <label for="domainTld">TLD (Contoh: giyu.pro)</label>
+                        <input type="text" id="domainTld" name="tld" required placeholder="giyu.pro">
+                    </div>
+                    <div class="form-group">
+                        <label for="domainZoneId">Zone ID (Cloudflare)</label>
+                        <input type="text" id="domainZoneId" name="zoneId" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="domainDefaultIp">Default IP Address (Untuk record A jika tidak dispesifikasi)</label>
+                    <input type="text" id="domainDefaultIp" name="defaultIp" placeholder="1.2.3.4">
+                </div>
+                <button type="submit" class="btn-save-settings"><i class="fas fa-save"></i> Simpan Pengaturan Domain</button>
+            </form>
+        </section>
+        
+        <section class="settings-section">
+            <h3><i class="fas fa-credit-card"></i> Metode Pembayaran</h3>
+            <div id="paymentGatewayList"></div>
+             <form id="paymentGatewayForm" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top:20px;">
+                <input type="hidden" id="paymentMethodCodeToEdit" name="methodCodeToEdit">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="paymentMethodCode">Kode Metode (Unik, cth: DANA, QRIS)</label>
+                        <input type="text" id="paymentMethodCode" name="methodCode" required style="text-transform:uppercase;">
+                    </div>
+                    <div class="form-group">
+                        <label for="paymentMethodName">Nama Metode Pembayaran</label>
+                        <input type="text" id="paymentMethodName" name="name" required placeholder="Transfer DANA">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="paymentAccountNumber">Nomor Akun/Rekening (Jika ada)</label>
+                        <input type="text" id="paymentAccountNumber" name="accountNumber">
+                    </div>
+                     <div class="form-group">
+                        <label for="paymentAccountName">Atas Nama (Jika ada)</label>
+                        <input type="text" id="paymentAccountName" name="accountName">
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label for="paymentInstructions">Instruksi Pembayaran</label>
+                    <textarea id="paymentInstructions" name="instructions" placeholder="Silakan transfer ke..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="paymentGatewayImage">Gambar (QRIS, Logo - Opsional)</label>
+                    <input type="file" id="paymentGatewayImage" name="gatewayImage" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label for="paymentIsActive">Status Aktif</label>
+                    <select id="paymentIsActive" name="isActive"><option value="true">Aktif</option><option value="false">Nonaktif</option></select>
+                </div>
+                <button type="submit" class="btn-save-settings"><i class="fas fa-save"></i> Simpan Metode Pembayaran</button>
+            </form>
+        </section>
+
+    </main>
+
+    <script>
+        const token = localStorage.getItem('giyuAdminToken');
+        if (!token) window.location.href = 'login';
+
+        const logoutButton = document.getElementById('logoutButton');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        const apiTokenListDiv = document.getElementById('apiTokenList');
+        const apiTokenForm = document.getElementById('apiTokenForm');
+        
+        const domainSettingListDiv = document.getElementById('domainSettingList');
+        const domainSettingForm = document.getElementById('domainSettingForm');
+
+        const paymentGatewayListDiv = document.getElementById('paymentGatewayList');
+        const paymentGatewayForm = document.getElementById('paymentGatewayForm');
+
+
+        function showLoading() { loadingOverlay.classList.add('show'); }
+        function hideLoading() { loadingOverlay.classList.remove('show'); }
+        
+        logoutButton.addEventListener('click', () => {
+            localStorage.removeItem('giyuAdminToken'); localStorage.removeItem('giyuAdminUser');
+            window.location.href = 'login';
+        });
+
+        async function fetchData(endpoint, listElementId, renderFunction, formElement = null, editIdentifierField = null) {
+            showLoading();
+            try {
+                const response = await fetch(`/api/settings${endpoint}`, { headers: { 'Authorization': `Bearer ${token}` } });
+                 if (!response.ok) {
+                    if(response.status === 401) logoutButton.click();
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const result = await response.json();
+                hideLoading();
+                const listElement = document.getElementById(listElementId);
+                if (result.success && result.data) {
+                    renderFunction(result.data, listElement, formElement, editIdentifierField);
+                } else {
+                    listElement.innerHTML = `<p style="color:var(--text-secondary);">${result.message || 'Gagal memuat data.'}</p>`;
+                }
+            } catch (error) {
+                hideLoading(); console.error(`Error fetching ${endpoint}:`, error);
+                document.getElementById(listElementId).innerHTML = `<p style="color:var(--text-secondary);">Terjadi kesalahan saat memuat data.</p>`;
+            }
+        }
+
+        function renderApiTokens(tokens, listElement, formElement, editIdentifierField) {
+            listElement.innerHTML = '';
+            if(tokens.length === 0) { listElement.innerHTML = '<p style="color:var(--text-secondary);">Belum ada API Token.</p>'; return; }
+            tokens.forEach(token => {
+                const item = document.createElement('div');
+                item.className = 'list-item';
+                item.innerHTML = `
+                    <div class="list-item-info">
+                        <strong>${token.provider.toUpperCase()}</strong>
+                        <span>${token.accountEmail || ''} ${token.apiUrl ? `(${token.apiUrl})` : ''}</span>
+                    </div>
+                    <div>
+                        <button class="btn-action-list btn-edit" onclick="editApiToken('${token.provider}')"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="btn-action-list btn-delete" onclick="deleteApiToken('${token.provider}')"><i class="fas fa-trash-alt"></i> Hapus</button>
+                    </div>
+                `;
+                listElement.appendChild(item);
+            });
+        }
+        
+        function renderDomainSettings(settings, listElement, formElement, editIdentifierField) {
+            listElement.innerHTML = '';
+            if(settings.length === 0) { listElement.innerHTML = '<p style="color:var(--text-secondary);">Belum ada Pengaturan Domain.</p>'; return; }
+            settings.forEach(setting => {
+                const item = document.createElement('div');
+                item.className = 'list-item';
+                item.innerHTML = `
+                    <div class="list-item-info">
+                        <strong>${setting.tld}</strong>
+                        <span>Zone ID: ${setting.zoneId} ${setting.defaultIp ? `| Default IP: ${setting.defaultIp}` : ''}</span>
+                    </div>
+                    <div>
+                        <button class="btn-action-list btn-edit" onclick="editDomainSetting('${setting.tld}')"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="btn-action-list btn-delete" onclick="deleteDomainSetting('${setting.tld}')"><i class="fas fa-trash-alt"></i> Hapus</button>
+                    </div>
+                `;
+                listElement.appendChild(item);
+            });
+        }
+        
+        function renderPaymentGateways(gateways, listElement, formElement, editIdentifierField) {
+            listElement.innerHTML = '';
+            if(gateways.length === 0) { listElement.innerHTML = '<p style="color:var(--text-secondary);">Belum ada Metode Pembayaran.</p>'; return; }
+            gateways.forEach(gw => {
+                const item = document.createElement('div');
+                item.className = 'list-item';
+                item.innerHTML = `
+                    <div class="list-item-info">
+                        <strong>${gw.name} (${gw.methodCode})</strong>
+                        <span>${gw.accountNumber ? `No: ${gw.accountNumber}`: ''} ${gw.accountName ? `A/N: ${gw.accountName}`: ''} - Status: ${gw.isActive ? 'Aktif' : 'Nonaktif'}</span>
+                    </div>
+                    <div>
+                        <button class="btn-action-list btn-edit" onclick="editPaymentGateway('${gw.methodCode}')"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="btn-action-list btn-delete" onclick="deletePaymentGateway('${gw.methodCode}')"><i class="fas fa-trash-alt"></i> Hapus</button>
+                    </div>
+                `;
+                listElement.appendChild(item);
+            });
+        }
+        
+        async function handleFormSubmit(event, formElement, endpoint, listElementId, renderFunction, editIdentifierField, fetchEndpoint = null) {
+            event.preventDefault();
+            showLoading();
+            const formData = new FormData(formElement);
+            const editingId = formData.get(editIdentifierField);
+            formData.delete(editIdentifierField); 
+
+            let url = `/api/settings${endpoint}`;
+            if (editingId) {
+                url += `/${encodeURIComponent(editingId)}`;
+            }
+            
+            const method = editingId ? 'PUT' : 'POST'; 
+
+            try {
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Authorization': `Bearer ${token}` }, 
+                    body: formData
+                });
+                const result = await response.json();
+                hideLoading();
+                if (response.ok && result.success) {
+                    alert(result.message || 'Pengaturan berhasil disimpan.');
+                    formElement.reset();
+                    if(editIdentifierField && formElement.querySelector(`input[name="${editIdentifierField}"]`)) formElement.querySelector(`input[name="${editIdentifierField}"]`).value = '';
+                    fetchData(fetchEndpoint || endpoint, listElementId, renderFunction, formElement, editIdentifierField);
+                } else {
+                    if(response.status === 401) logoutButton.click();
+                    alert(`Gagal: ${result.message || 'Terjadi kesalahan.'}`);
+                }
+            } catch (error) {
+                hideLoading(); console.error(`Error saving ${endpoint}:`, error);
+                alert('Terjadi kesalahan koneksi.');
+            }
+        }
+        
+        apiTokenForm.addEventListener('submit', (e) => handleFormSubmit(e, apiTokenForm, '/api-tokens', 'apiTokenList', renderApiTokens, 'providerToEdit'));
+        domainSettingForm.addEventListener('submit', (e) => handleFormSubmit(e, domainSettingForm, '/domain-settings', 'domainSettingList', renderDomainSettings, 'tldToEdit'));
+        paymentGatewayForm.addEventListener('submit', (e) => handleFormSubmit(e, paymentGatewayForm, '/payment-gateways', 'paymentGatewayList', renderPaymentGateways, 'methodCodeToEdit'));
+
+
+        async function deleteItem(endpoint, itemId, listElementId, renderFunction, fetchEndpoint = null, itemName = 'Item') {
+            if (!confirm(`Apakah Anda yakin ingin menghapus ${itemName} "${itemId}"?`)) return;
+            showLoading();
+            try {
+                const response = await fetch(`/api/settings${endpoint}/${encodeURIComponent(itemId)}`, {
+                    method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const result = await response.json();
+                hideLoading();
+                if (response.ok && result.success) {
+                    alert(result.message || `${itemName} berhasil dihapus.`);
+                    fetchData(fetchEndpoint || endpoint, listElementId, renderFunction);
+                } else {
+                    if(response.status === 401) logoutButton.click();
+                    alert(`Gagal menghapus: ${result.message || 'Terjadi kesalahan.'}`);
+                }
+            } catch (error) {
+                hideLoading(); console.error(`Error deleting ${endpoint}:`, error);
+                alert('Terjadi kesalahan koneksi.');
+            }
+        }
+
+        window.editApiToken = async (provider) => {
+            const tokenData = (await (await fetch(`/api/settings/api-tokens`, {headers: {'Authorization': `Bearer ${token}`}})).json()).data.find(t => t.provider === provider);
+            if(tokenData){
+                document.getElementById('apiTokenProviderToEdit').value = provider;
+                document.getElementById('apiProvider').value = tokenData.provider;
+                document.getElementById('apiProvider').disabled = true; 
+                document.getElementById('apiTokenValue').value = ''; 
+                document.getElementById('apiUrl').value = tokenData.apiUrl || '';
+                document.getElementById('apiAccountEmail').value = tokenData.accountEmail || '';
+                apiTokenForm.scrollIntoView({behavior: "smooth"});
+            }
+        };
+        window.deleteApiToken = (provider) => deleteItem('/api-tokens', provider, 'apiTokenList', renderApiTokens, '/api-tokens', 'API Token');
+        
+        window.editDomainSetting = async (tld) => {
+            const settingData = (await (await fetch(`/api/settings/domain-settings`, {headers: {'Authorization': `Bearer ${token}`}})).json()).data.find(s => s.tld === tld);
+            if(settingData){
+                document.getElementById('domainTldToEdit').value = tld;
+                document.getElementById('domainTld').value = settingData.tld;
+                document.getElementById('domainTld').disabled = true;
+                document.getElementById('domainZoneId').value = settingData.zoneId;
+                document.getElementById('domainDefaultIp').value = settingData.defaultIp || '';
+                domainSettingForm.scrollIntoView({behavior: "smooth"});
+            }
+        };
+        window.deleteDomainSetting = (tld) => deleteItem('/domain-settings', tld, 'domainSettingList', renderDomainSettings, '/domain-settings', 'Pengaturan Domain');
+
+        window.editPaymentGateway = async (methodCode) => {
+            const gwData = (await (await fetch(`/api/settings/payment-gateways`, {headers: {'Authorization': `Bearer ${token}`}})).json()).data.find(gw => gw.methodCode === methodCode);
+            if(gwData){
+                document.getElementById('paymentMethodCodeToEdit').value = methodCode;
+                document.getElementById('paymentMethodCode').value = gwData.methodCode;
+                document.getElementById('paymentMethodCode').disabled = true;
+                document.getElementById('paymentMethodName').value = gwData.name;
+                document.getElementById('paymentAccountNumber').value = gwData.accountNumber || '';
+                document.getElementById('paymentAccountName').value = gwData.accountName || '';
+                document.getElementById('paymentInstructions').value = gwData.instructions || '';
+                document.getElementById('paymentIsActive').value = gwData.isActive.toString();
+                document.getElementById('paymentGatewayImage').value = ''; 
+                paymentGatewayForm.scrollIntoView({behavior: "smooth"});
+            }
+        };
+        window.deletePaymentGateway = (methodCode) => deleteItem('/payment-gateways', methodCode, 'paymentGatewayList', renderPaymentGateways, '/payment-gateways', 'Metode Pembayaran');
+        
+        apiTokenForm.addEventListener('reset', () => { document.getElementById('apiProvider').disabled = false; document.getElementById('apiTokenProviderToEdit').value = '';});
+        domainSettingForm.addEventListener('reset', () => { document.getElementById('domainTld').disabled = false; document.getElementById('domainTldToEdit').value = '';});
+        paymentGatewayForm.addEventListener('reset', () => { document.getElementById('paymentMethodCode').disabled = false; document.getElementById('paymentMethodCodeToEdit').value = '';});
+
+
+        fetchData('/api-tokens', 'apiTokenList', renderApiTokens, apiTokenForm, 'providerToEdit');
+        fetchData('/domain-settings', 'domainSettingList', renderDomainSettings, domainSettingForm, 'tldToEdit');
+        fetchData('/payment-gateways', 'paymentGatewayList', renderPaymentGateways, paymentGatewayForm, 'methodCodeToEdit');
+    </script>
+</body>
+</html>
