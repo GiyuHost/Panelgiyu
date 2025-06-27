@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIYU HOST - Solusi Hosting Premium Dark Mode</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+        :root {
+            --primary-blue: #0A7AFF; --secondary-blue: #3498DB; --accent-glow: #00E0FF;
+            --cta-color: #FFC107; --cta-hover-color: #FFB300;
+            --dark-bg-primary: #12121F; --dark-bg-secondary: #1A1A2E; --dark-bg-tertiary: #24243D;
+            --text-primary: #E0E0E0; --text-secondary: #A0A0B0; --border-color: #33334D;
+            --shadow-light: rgba(0, 198, 255, 0.1); --shadow-strong: rgba(0, 198, 255, 0.2);
+            --border-radius: 8px; --font-main: 'Poppins', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-main); background-color: var(--dark-bg-primary); color: var(--text-primary);
+            line-height: 1.7; overflow-x: hidden; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+        }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+        header {
+            background-color: var(--dark-bg-secondary); padding: 1rem 0; box-shadow: 0 2px 10px var(--shadow-light);
+            position: sticky; top: 0; z-index: 1000;
+        }
+        header .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 2em; font-weight: 800; text-decoration: none; color: var(--primary-blue); letter-spacing: -1px; }
+        .logo i { margin-right: 8px; }
+        nav ul { list-style: none; display: flex; }
+        nav ul li { margin-left: 30px; }
+        nav ul li a {
+            color: var(--text-secondary); text-decoration: none; font-weight: 500; padding: 8px 15px;
+            border-radius: var(--border-radius); transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        nav ul li a:hover, nav ul li a.active { background-color: var(--primary-blue); color: #fff; }
+        .hero {
+            background: linear-gradient(rgba(18, 18, 31, 0.85), rgba(18, 18, 31, 0.95)), url('https://via.placeholder.com/1920x700.png/1A1A2E/E0E0E0?text=GIYU+DARK+HERO') no-repeat center center/cover;
+            color: var(--text-primary); text-align: center; padding: 120px 20px 100px; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; min-height: 75vh;
+        }
+        .hero h1 {
+            font-size: 3.5em; margin-bottom: 0.4em; font-weight: 700; line-height: 1.2;
+            color: #fff; text-shadow: 0 0 15px var(--accent-glow);
+        }
+        .hero p {
+            font-size: 1.3em; margin-bottom: 2em; max-width: 650px; color: var(--text-secondary); font-weight: 300;
+        }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px; background-color: var(--cta-color);
+            color: var(--dark-bg-primary); padding: 14px 30px; text-decoration: none; border: none;
+            border-radius: var(--border-radius); font-weight: 600; cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.2);
+        }
+        .btn:hover {
+            background-color: var(--cta-hover-color); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(255, 193, 7, 0.3);
+        }
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue)); color: #fff;
+            box-shadow: 0 4px 15px var(--shadow-light);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(90deg, var(--secondary-blue), var(--primary-blue)); box-shadow: 0 6px 20px var(--shadow-strong);
+        }
+        .section { padding: 80px 0; }
+        .section-title {
+            text-align: center; font-size: 2.8em; margin-bottom: 60px; font-weight: 700;
+            position: relative; color: var(--primary-blue);
+        }
+        .section-title::after {
+            content: ''; display: block; width: 100px; height: 5px; margin: 15px auto 0; border-radius: 3px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-glow));
+        }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px; }
+        .product-card {
+            background-color: var(--dark-bg-secondary); border: 1px solid var(--border-color);
+            border-radius: var(--border-radius); padding: 30px; box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            display: flex; flex-direction: column;
+        }
+        .product-card:hover {
+            transform: translateY(-8px); box-shadow: 0 10px 35px var(--shadow-strong); border-color: var(--primary-blue);
+        }
+        .product-card img.product-image {
+            width: 100%; height: 200px; object-fit: cover; border-radius: var(--border-radius) var(--border-radius) 0 0;
+            margin: -30px -30px 25px -30px; border-bottom: 1px solid var(--border-color);
+        }
+        .product-card h3 { color: var(--primary-blue); margin-top: 0; font-size: 1.8em; font-weight: 600; }
+        .product-card p.description { margin-bottom: 20px; flex-grow: 1; font-size: 0.95em; color: var(--text-secondary); }
+        .product-card .price { font-size: 2em; font-weight: 700; color: var(--cta-color); margin-bottom: 25px; }
+        .product-card .price span { font-size: 0.6em; font-weight: 400; color: var(--text-secondary); }
+        .features-list { list-style: none; padding: 0; margin-bottom: 25px; flex-grow: 1; }
+        .features-list li {
+            margin-bottom: 10px; padding-left: 28px; position: relative; font-size: 0.9em; color: var(--text-secondary);
+        }
+        .features-list li i { color: var(--accent-glow); position: absolute; left: 0; top: 3px; font-size: 1.1em; }
+        .modal {
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
+            overflow: auto; background-color: rgba(0,0,0,0.8); align-items: center; justify-content: center;
+        }
+        .modal.show { display: flex; }
+        .modal-content {
+            background-color: var(--dark-bg-secondary); margin: auto; padding: 35px; border-radius: var(--border-radius);
+            border-top: 5px solid var(--primary-blue); width: 90%; max-width: 650px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5); position: relative; animation: slideInModal 0.4s ease-out;
+        }
+        @keyframes slideInModal { from { transform: translateY(-50px) scale(0.95); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+        .modal-close {
+            color: var(--text-secondary); position: absolute; top: 15px; right: 20px; font-size: 32px;
+            font-weight: bold; cursor: pointer; transition: color 0.3s ease;
+        }
+        .modal-close:hover, .modal-close:focus { color: var(--primary-blue); }
+        .modal-title { font-size: 2em; margin-bottom: 25px; color: var(--primary-blue); font-weight: 600; }
+        .form-group { margin-bottom: 22px; }
+        .form-group label { display: block; margin-bottom: 10px; font-weight: 500; color: var(--text-secondary); }
+        .form-group input[type="text"], .form-group input[type="email"], .form-group input[type="password"], .form-group input[type="file"], .form-group select, .form-group input[type="number"] {
+            width: 100%; padding: 14px; border: 1px solid var(--border-color); border-radius: var(--border-radius);
+            font-size: 1em; background-color: var(--dark-bg-tertiary); color: var(--text-primary); transition: border-color 0.3s ease;
+        }
+        .form-group input:focus, .form-group select:focus { border-color: var(--primary-blue); outline: none; }
+        .payment-method-options { margin-bottom: 20px; }
+        .payment-method-options label { margin-right: 15px; color: var(--text-secondary); }
+        .payment-methods-manual {
+            margin-top: 15px; padding: 20px; background-color: var(--dark-bg-tertiary);
+            border: 1px dashed var(--border-color); border-radius: var(--border-radius);
+        }
+        .payment-methods-manual h4 { margin-top: 0; color: var(--primary-blue); font-weight: 600; font-size: 1.2em; margin-bottom: 15px;}
+        .payment-methods-manual p { margin: 10px 0; color: var(--text-secondary); }
+        .payment-methods-manual strong { color: var(--accent-glow); }
+        .payment-methods-manual img.qris-img-manual {
+            max-width: 180px; display: block; margin: 15px auto; border: 3px solid var(--border-color);
+            padding: 8px; background: #fff; border-radius: var(--border-radius);
+        }
+        #orkutQrisPaymentArea { text-align: center; margin-top: 20px; padding: 20px; background-color: var(--dark-bg-tertiary); border-radius: var(--border-radius); border: 1px solid var(--border-color);}
+        #orkutQrisPaymentArea img.qris-img-orkut { max-width: 250px; height:auto; margin: 15px auto; border: 3px solid var(--border-color); padding: 8px; background: #fff; border-radius:var(--border-radius);}
+        #orkutQrisPaymentArea p { margin-bottom: 10px; }
+        #orkutQrisPaymentArea .btn-telegram { background-color: var(--primary-blue); color: white; display: inline-block; width: auto; margin-top: 10px; padding: 10px 15px; text-decoration:none; border-radius:var(--border-radius); }
+
+        #accountCreationForm, #vpsCreationForm, #subdomainCreationForm, #orkutQrisPaymentArea { display: none; margin-top: 25px; }
+        footer {
+            background-color: #0D0D17; color: var(--text-secondary); text-align: center; padding: 40px 0;
+            margin-top: 80px; border-top: 1px solid var(--border-color);
+        }
+        footer p { margin: 0; font-size: 0.9em; }
+        .loading-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(18, 18, 31, 0.8); z-index: 3000; align-items: center; justify-content: center;
+        }
+        .loading-overlay.show { display: flex; }
+        .spinner {
+            width: 60px; height: 60px; border: 5px solid var(--dark-bg-tertiary);
+            border-top-color: var(--primary-blue); border-radius: 50%; animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5em; } .hero p { font-size: 1.1em; }
+            header .container { flex-direction: column; } nav ul { margin-top: 15px; }
+            nav ul li { margin: 0 10px; } .section-title { font-size: 2.2em; }
+            .product-grid { grid-template-columns: 1fr; }
+            .modal-content { padding: 25px; } .modal-title { font-size: 1.6em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay" id="loadingOverlay"><div class="spinner"></div></div>
+    <header>
+        <div class="container">
+            <a href="#" class="logo"><i class="fas fa-ghost"></i>GIYU HOST</a>
+            <nav>
+                <ul>
+                    <li><a href="#hero-section" class="nav-link active">Beranda</a></li>
+                    <li><a href="#hosting" class="nav-link">Hosting</a></li>
+                    <li><a href="#vps" class="nav-link">VPS</a></li>
+                    <li><a href="#subdomain" class="nav-link">Subdomain</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero" id="hero-section">
+        <h1>Kekuatan Digital Tanpa Batas</h1>
+        <p>GIYU HOST menyediakan solusi hosting, VPS, dan subdomain dengan performa tinggi, keamanan terjamin, dan dukungan ahli untuk mewujudkan visi online Anda.</p>
+        <a href="#hosting" class="btn"><i class="fas fa-rocket"></i>Jelajahi Paket Kami</a>
+    </section>
+
+    <main>
+        <section id="hosting" class="section">
+            <div class="container">
+                <h2 class="section-title">Paket Web Hosting</h2>
+                <div class="product-grid" id="hostingProductGrid">
+                </div>
+            </div>
+        </section>
+
+        <section id="vps" class="section" style="background-color: var(--dark-bg-tertiary);">
+            <div class="container">
+                <h2 class="section-title">Virtual Private Server (VPS)</h2>
+                <div class="product-grid" id="vpsProductGrid">
+                </div>
+            </div>
+        </section>
+
+        <section id="subdomain" class="section">
+            <div class="container">
+                <h2 class="section-title">Registrasi Subdomain</h2>
+                <div class="product-grid" id="subdomainProductGrid">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" title="Tutup">×</span>
+            <h3 class="modal-title" id="modalProductTitle"><i class="fas fa-file-invoice-dollar"></i> Formulir Pemesanan</h3>
+            <p style="color:var(--text-secondary);">Produk: <strong id="modalProductNameEl" style="color:var(--primary-blue);">Nama Produk</strong></p>
+            <p style="color:var(--text-secondary);">Total Harga: <strong id="modalProductPriceEl" style="color:var(--cta-color);">Rp 0</strong></p>
+
+            <div id="initialCustomerDetailsSection">
+                <div class="form-group">
+                    <label for="modalCustomerName"><i class="fas fa-user"></i> Nama Anda:</label>
+                    <input type="text" id="modalCustomerName" name="modalCustomerName" placeholder="Nama Lengkap">
+                </div>
+                <div class="form-group">
+                    <label for="modalCustomerEmail"><i class="fas fa-envelope"></i> Email Anda:</label>
+                    <input type="email" id="modalCustomerEmail" name="modalCustomerEmail" placeholder="Email Aktif">
+                </div>
+            </div>
+            
+            <div id="paymentMethodSelectionSection" class="form-group">
+                <label><i class="fas fa-money-check"></i> Pilih Metode Pembayaran:</label>
+                <div class="payment-method-options">
+                    <input type="radio" id="payMethodManual" name="paymentMethod" value="TRANSFER_MANUAL" checked> <label for="payMethodManual">Transfer Manual (DANA, OVO, GoPay, QRIS Manual)</label><br>
+                    <input type="radio" id="payMethodOrkutQris" name="paymentMethod" value="ORKUT_QRIS_DYNAMIC"> <label for="payMethodOrkutQris">QRIS Dinamis Otomatis</label>
+                </div>
+            </div>
+
+            <div id="manualPaymentSection">
+                <div class="payment-methods-manual">
+                    <h4><i class="fas fa-university"></i> Transfer Manual</h4>
+                    <p><img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=GIYUHOST_QRIS_PAYMENT_MANUAL&bgcolor=24243D&color=00E0FF&qzone=1" alt="QRIS GIYU HOST Manual" class="qris-img-manual"></p>
+                    <p><i class="fab fa-dribbble" style="color: #ea4c89;"></i> <strong>DANA:</strong> 0812-GIYU-HOST (a.n. GIYU HOST)</p>
+                    <p><i class="fas fa-wallet" style="color: #7B1FA2;"></i> <strong>OVO:</strong> 0812-GIYU-HOST (a.n. GIYU HOST)</p>
+                    <p><i class="fas fa-motorcycle" style="color: #00AA13;"></i> <strong>GoPay:</strong> 0812-GIYU-HOST (a.n. GIYU HOST)</p>
+                </div>
+                <div class="form-group">
+                    <label for="paymentProof"><i class="fas fa-upload"></i> Upload Bukti Transfer (Max. 2MB, JPG/PNG):</label>
+                    <input type="file" id="paymentProof" name="paymentProof" accept="image/jpeg, image/png">
+                </div>
+            </div>
+            
+            <div id="orkutQrisPaymentArea">
+            </div>
+
+            <button class="btn btn-primary" id="initiateOrderBtn" style="width: 100%; margin-top:20px;"><i class="fas fa-arrow-right"></i> Lanjutkan ke Konfigurasi</button>
+            
+            <div id="serviceConfigurationSection" style="display:none;">
+                <hr style="border-color: var(--border-color); margin: 25px 0;">
+                <div id="accountCreationForm">
+                    <h4><i class="fas fa-user-cog"></i> Pembuatan Akun Panel Hosting</h4>
+                    <div class="form-group"><label for="panelUsername"><i class="fas fa-user"></i> Username Panel:</label><input type="text" id="panelUsername" name="panelUsername" placeholder="Contoh: giyuhost_user"></div>
+                    <div class="form-group"><label for="panelPassword"><i class="fas fa-key"></i> Password Panel:</label><input type="password" id="panelPassword" name="panelPassword" placeholder="Min. 8 karakter"></div>
+                </div>
+                <div id="vpsCreationForm">
+                    <h4><i class="fas fa-server"></i> Konfigurasi VPS</h4>
+                    <div class="form-group"><label for="vpsOS"><i class="fab fa-linux"></i> OS:</label><select id="vpsOS" name="vpsOS"><option value="ubuntu22">Ubuntu 22.04</option><option value="centos7">CentOS 7</option></select></div>
+                    <div class="form-group"><label for="vpsRegion"><i class="fas fa-map-marker-alt"></i> Region:</label><select id="vpsRegion" name="vpsRegion"><option value="sgp">Singapura</option><option value="jkt">Jakarta</option></select></div>
+                    <div class="form-group"><label for="vpsPassword"><i class="fas fa-key"></i> Root Password:</label><input type="password" id="vpsPassword" name="vpsPassword" placeholder="Min. 10 kar, A-Z, a-z, 0-9"></div>
+                    <div class="form-group"><label for="vpsHostname"><i class="fas fa-desktop"></i> Hostname:</label><input type="text" id="vpsHostname" name="vpsHostname" placeholder="server.domain.com"></div>
+                </div>
+                <div id="subdomainCreationForm">
+                    <h4><i class="fas fa-link"></i> Konfigurasi Subdomain</h4>
+                    <div class="form-group"><label for="subdomainNameInput"><i class="fas fa-i-cursor"></i> Nama Subdomain:</label><input type="text" id="subdomainNameInput" name="subdomainNameInput" placeholder="tokoanda"></div>
+                    <div class="form-group"><label for="subdomainParentDomain"><i class="fas fa-globe"></i> Domain Induk:</label><select id="subdomainParentDomain" name="subdomainParentDomain"><option value="giyu.pro">.giyu.pro</option><option value="giyu.dev">.giyu.dev</option></select></div>
+                    <p>Hasil: <strong id="subdomainPreview" style="color:var(--accent-glow);">namaanda.giyu.pro</strong></p>
+                    <div class="form-group"><label for="subdomainRecordType"><i class="fas fa-sliders-h"></i> Tipe Record:</label><select id="subdomainRecordType" name="subdomainRecordType"><option value="A">A</option><option value="CNAME">CNAME</option><option value="TXT">TXT</option></select></div>
+                    <div class="form-group"><label for="subdomainRecordValue" id="subdomainRecordValueLabel"><i class="fas fa-file-alt"></i> Value Record:</label><input type="text" id="subdomainRecordValue" name="subdomainRecordValue" placeholder="192.168.1.1"></div>
+                </div>
+                <button class="btn btn-primary" id="proceedToCheckoutBtn" style="width: 100%; margin-top:20px;"><i class="fas fa-shopping-cart"></i> Lanjutkan ke Checkout Akhir</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p><i class="far fa-copyright"></i> 2024 GIYU HOST. Dirancang dengan <i class="fas fa-heart" style="color:var(--primary-blue);"></i> untuk Performa Digital.</p>
+    </footer>
+
+    <script>
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.section, .hero');
+        const orderModal = document.getElementById('orderModal');
+        const modalClose = document.querySelector('.modal-close');
+        const modalProductNameEl = document.getElementById('modalProductNameEl');
+        const modalProductPriceEl = document.getElementById('modalProductPriceEl');
+        const initialCustomerDetailsSection = document.getElementById('initialCustomerDetailsSection');
+        const modalCustomerNameInput = document.getElementById('modalCustomerName');
+        const modalCustomerEmailInput = document.getElementById('modalCustomerEmail');
+        const paymentMethodRadios = document.querySelectorAll('input[name="paymentMethod"]');
+        const manualPaymentSection = document.getElementById('manualPaymentSection');
+        const orkutQrisPaymentArea = document.getElementById('orkutQrisPaymentArea');
+        const paymentProofInput = document.getElementById('paymentProof');
+        const initiateOrderBtn = document.getElementById('initiateOrderBtn');
+        const serviceConfigurationSection = document.getElementById('serviceConfigurationSection');
+        const accountCreationForm = document.getElementById('accountCreationForm');
+        const vpsCreationForm = document.getElementById('vpsCreationForm');
+        const subdomainCreationForm = document.getElementById('subdomainCreationForm');
+        const proceedToCheckoutBtn = document.getElementById('proceedToCheckoutBtn');
+        const subdomainNameInput = document.getElementById('subdomainNameInput');
+        const subdomainParentDomainSelect = document.getElementById('subdomainParentDomain');
+        const subdomainPreview = document.getElementById('subdomainPreview');
+        const subdomainRecordTypeSelect = document.getElementById('subdomainRecordType');
+        const subdomainRecordValueLabel = document.getElementById('subdomainRecordValueLabel');
+        const subdomainRecordValueInput = document.getElementById('subdomainRecordValue');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const telegramBotUsername = 'NAMA_BOT_TELEGRAM_ANDA';
+
+        let currentProductData = {};
+        let initiatedOrderData = {}; 
+
+        function showLoading() { loadingOverlay.classList.add('show'); }
+        function hideLoading() { loadingOverlay.classList.remove('show'); }
+
+        async function fetchProducts() {
+            showLoading();
+            try {
+                const response = await fetch('/api/products?limit=100');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const result = await response.json();
+                if (result.success && result.data) renderProducts(result.data);
+                else console.error("Gagal memuat produk:", result.message);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+                ['hostingProductGrid', 'vpsProductGrid', 'subdomainProductGrid'].forEach(id => {
+                    const el = document.getElementById(id);
+                    if(el) el.innerHTML = '<p style="color:var(--text-secondary);text-align:center;">Gagal memuat produk.</p>';
+                });
+            } finally { hideLoading(); }
+        }
+
+        function renderProducts(products) {
+            const grids = { hosting: document.getElementById('hostingProductGrid'), vps: document.getElementById('vpsProductGrid'), subdomain: document.getElementById('subdomainProductGrid') };
+            Object.values(grids).forEach(grid => { if(grid) grid.innerHTML = ''; });
+            products.forEach(product => {
+                if (!grids[product.type]) return;
+                const featuresHtml = product.features.map(f => `<li><i class="fas fa-check"></i> ${f}</li>`).join('');
+                const cardHtml = `<div class="product-card"> <img src="${product.imageUrl || 'https://via.placeholder.com/400x200.png/24243D/00E0FF?text=Produk'}" alt="${product.name}" class="product-image"> <h3><i class="fas fa-box-open"></i> ${product.name}</h3> <p class="description">${product.description}</p> <ul class="features-list">${featuresHtml}</ul> <div class="price">Rp ${parseInt(product.price).toLocaleString('id-ID')} <span>/${product.type === 'subdomain' ? 'tahun' : 'bulan'}</span></div> <button class="btn btn-primary order-btn" data-product-id="${product._id}" data-product-name="${product.name}" data-product-price="${product.price}" data-type="${product.type}"><i class="fas fa-shopping-cart"></i> Pesan Sekarang</button> </div>`;
+                grids[product.type].insertAdjacentHTML('beforeend', cardHtml);
+            });
+            attachOrderButtonListeners();
+        }
+        
+        function attachOrderButtonListeners() {
+            document.querySelectorAll('.order-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    currentProductData = { id: this.dataset.productId, name: this.dataset.productName, price: this.dataset.productPrice, type: this.dataset.type };
+                    openModal();
+                });
+            });
+        }
+
+        function updateSubdomainPreview() { if(subdomainPreview) subdomainPreview.textContent = `${subdomainNameInput.value || "namaanda"}.${subdomainParentDomainSelect.value}`; }
+        function updateSubdomainRecordValuePlaceholder() {
+            if(!subdomainRecordTypeSelect || !subdomainRecordValueLabel || !subdomainRecordValueInput) return;
+            const type = subdomainRecordTypeSelect.value; let label = "Value Record"; let placeholder = "Value";
+            if(type === 'A') {label="<i class='fas fa-network-wired'></i> IPv4:"; placeholder="1.2.3.4";}
+            else if(type === 'CNAME') {label="<i class='fas fa-link'></i> Target Hostname:"; placeholder="target.domain.com";}
+            else if(type === 'TXT') {label="<i class='fas fa-file-alt'></i> Teks Value:"; placeholder='"text data"';}
+            subdomainRecordValueLabel.innerHTML = label; subdomainRecordValueInput.placeholder = placeholder;
+        }
+        if(subdomainNameInput) subdomainNameInput.addEventListener('input', updateSubdomainPreview);
+        if(subdomainParentDomainSelect) subdomainParentDomainSelect.addEventListener('change', updateSubdomainPreview);
+        if(subdomainRecordTypeSelect) subdomainRecordTypeSelect.addEventListener('change', updateSubdomainRecordValuePlaceholder);
+
+        function openModal() {
+            modalProductNameEl.textContent = currentProductData.name;
+            modalProductPriceEl.textContent = `Rp ${parseInt(currentProductData.price).toLocaleString('id-ID')}`;
+            initialCustomerDetailsSection.style.display = 'block';
+            paymentMethodSelectionSection.style.display = 'block';
+            manualPaymentSection.style.display = document.querySelector('input[name="paymentMethod"]:checked').value === 'TRANSFER_MANUAL' ? 'block' : 'none';
+            orkutQrisPaymentArea.style.display = 'none';
+            orkutQrisPaymentArea.innerHTML = '';
+            serviceConfigurationSection.style.display = 'none';
+            initiateOrderBtn.style.display = 'block';
+            paymentProofInput.value = '';
+            orderModal.classList.add('show');
+        }
+        modalClose.addEventListener('click', () => orderModal.classList.remove('show'));
+        window.addEventListener('click', (event) => { if (event.target === orderModal) orderModal.classList.remove('show'); });
+
+        paymentMethodRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                manualPaymentSection.style.display = this.value === 'TRANSFER_MANUAL' ? 'block' : 'none';
+                orkutQrisPaymentArea.style.display = this.value === 'ORKUT_QRIS_DYNAMIC' ? 'block' : 'none';
+                 if(this.value === 'ORKUT_QRIS_DYNAMIC') orkutQrisPaymentArea.innerHTML = '<p style="color:var(--text-secondary);">QRIS akan dibuat setelah klik "Lanjutkan"...</p>';
+            });
+        });
+
+        initiateOrderBtn.addEventListener('click', async function() {
+            const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+            const customerName = modalCustomerNameInput.value.trim();
+            const customerEmail = modalCustomerEmailInput.value.trim();
+
+            if (!customerName || !customerEmail) { alert('Nama dan Email Anda diperlukan.'); return; }
+            if (!/\S+@\S+\.\S+/.test(customerEmail)) { alert('Format email tidak valid.'); return; }
+
+            showLoading();
+            const formData = new FormData();
+            formData.append('items', JSON.stringify([{ productId: currentProductData.id, quantity: 1, name: currentProductData.name, price: currentProductData.price }]));
+            formData.append('paymentMethod', selectedPaymentMethod);
+            formData.append('customerName', customerName);
+            formData.append('customerEmail', customerEmail);
+
+
+            if (selectedPaymentMethod === 'TRANSFER_MANUAL') {
+                if (!paymentProofInput.files || paymentProofInput.files.length === 0) {
+                    hideLoading(); alert('Harap unggah bukti pembayaran untuk transfer manual.'); return;
+                }
+                const file = paymentProofInput.files[0];
+                const fileSize = file.size / 1024 / 1024; const allowedTypes = ['image/jpeg', 'image/png'];
+                if (!allowedTypes.includes(file.type) || fileSize > 2) {
+                    hideLoading(); alert('Bukti transfer tidak valid (JPG/PNG, maks 2MB).'); return;
+                }
+                formData.append('paymentProofFile', file);
+            }
+            
+            try {
+                const response = await fetch('/api/orders/initiate', { method: 'POST', body: formData });
+                const result = await response.json();
+                hideLoading();
+                if (response.ok && result.success) {
+                    initiatedOrderData = result.data; 
+                    alert(result.message);
+                    initialCustomerDetailsSection.style.display = 'none';
+                    paymentMethodSelectionSection.style.display = 'none';
+                    manualPaymentSection.style.display = 'none';
+                    initiateOrderBtn.style.display = 'none';
+                    
+                    if (selectedPaymentMethod === 'ORKUT_QRIS_DYNAMIC' && result.data.qrImageUrl) {
+                        orkutQrisPaymentArea.innerHTML = `
+                            <h4>Scan QRIS untuk Pembayaran</h4>
+                            <img src="${result.data.qrImageUrl}" alt="QRIS Orkut" class="qris-img-orkut">
+                            <p><strong>Total: Rp ${parseInt(result.data.amountToPay).toLocaleString('id-ID')}</strong></p>
+                            <p style="color: var(--delete-color);">Kedaluwarsa: ${new Date(result.data.expiredAt).toLocaleString('id-ID')}</p>
+                            <p>Ref ID: <strong>${result.data.orkutReffId}</strong></p>
+                            <a href="https://t.me/${telegramBotUsername}?start=order_${result.data.orderId}" target="_blank" class="btn-telegram"><i class="fab fa-telegram-plane"></i> Simpan ID & Cek Status di Telegram</a>
+                        `;
+                        orkutQrisPaymentArea.style.display = 'block';
+                    }
+
+                    serviceConfigurationSection.style.display = 'block';
+                    accountCreationForm.style.display = currentProductData.type === 'hosting' ? 'block' : 'none';
+                    vpsCreationForm.style.display = currentProductData.type === 'vps' ? 'block' : 'none';
+                    subdomainCreationForm.style.display = currentProductData.type === 'subdomain' ? 'block' : 'none';
+                    if(currentProductData.type === 'subdomain') { updateSubdomainPreview(); updateSubdomainRecordValuePlaceholder(); }
+
+                } else {
+                    alert(`Gagal memproses pesanan: ${result.message || 'Terjadi kesalahan.'}`);
+                }
+            } catch (error) {
+                hideLoading(); console.error('Error initiating order:', error);
+                alert('Terjadi kesalahan koneksi.');
+            }
+        });
+
+        proceedToCheckoutBtn.addEventListener('click', function() {
+            let checkoutParams = new URLSearchParams();
+            checkoutParams.append('orderId', initiatedOrderData.orderId);
+            checkoutParams.append('productName', currentProductData.name);
+            checkoutParams.append('price', currentProductData.price);
+            checkoutParams.append('type', currentProductData.type);
+            checkoutParams.append('paymentMethod', document.querySelector('input[name="paymentMethod"]:checked').value);
+            if (initiatedOrderData.qrImageUrl) { // Jika QRIS
+                checkoutParams.append('qrImageUrl', initiatedOrderData.qrImageUrl);
+                checkoutParams.append('amountToPay', initiatedOrderData.amountToPay);
+                checkoutParams.append('expiredAt', initiatedOrderData.expiredAt);
+                checkoutParams.append('orkutReffId', initiatedOrderData.orkutReffId);
+            }
+
+            if (currentProductData.type === 'hosting') {
+                const username = document.getElementById('panelUsername').value;
+                const pass = document.getElementById('panelPassword').value;
+                if (!username.trim() || !pass.trim() || pass.length < 8) { alert('Username & Password Panel Hosting (min 8 kar) harus diisi!'); return; }
+                checkoutParams.append('hostingUsername', username);
+            } else if (currentProductData.type === 'vps') {
+                const os = document.getElementById('vpsOS').value; const region = document.getElementById('vpsRegion').value;
+                const vpsPass = document.getElementById('vpsPassword').value; const vpsHostname = document.getElementById('vpsHostname').value;
+                if (!vpsPass.trim() || vpsPass.length < 10 || !/[A-Z]/.test(vpsPass) || !/[a-z]/.test(vpsPass) || !/[0-9]/.test(vpsPass)) {
+                    alert('Password VPS (min 10 kar, A-Z, a-z, 0-9) harus diisi!'); return;
+                }
+                checkoutParams.append('vpsOs', os); checkoutParams.append('vpsRegion', region);
+                checkoutParams.append('vpsHostname', vpsHostname); checkoutParams.append('vpsRootPassword', vpsPass);
+            } else if (currentProductData.type === 'subdomain') {
+                const subName = subdomainNameInput.value; const parentDomain = subdomainParentDomainSelect.value;
+                const recordType = subdomainRecordTypeSelect.value; const recordValue = subdomainRecordValueInput.value;
+                if (!subName.trim() || !recordValue.trim()) { alert('Nama subdomain dan value record harus diisi!'); return; }
+                checkoutParams.append('subdomainFullName', `${subName}.${parentDomain}`);
+                checkoutParams.append('subdomainRecordType', recordType);
+                checkoutParams.append('subdomainRecordValue', recordValue);
+            }
+            orderModal.classList.remove('show');
+            window.location.href = `./checkout.html?${checkoutParams.toString()}`;
+        });
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault(); const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    const headerOffset = document.querySelector('header').offsetHeight || 70;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                }
+            });
+        });
+        
+        fetchProducts();
+        setActiveLink('hero-section'); // Helper untuk navigasi, bisa dibuat jika perlu
+        function setActiveLink(targetId){ navLinks.forEach(l => l.classList.remove('active')); const activeL = document.querySelector(`nav a[href="#${targetId}"]`); if(activeL) activeL.classList.add('active');}
+    </script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesanan Berhasil Diproses - GIYU HOST</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+        :root {
+            --primary-blue: #0A7AFF; --secondary-blue: #3498DB; --accent-glow: #00E0FF;
+            --success-color: #28a745; --cta-color: #FFC107;
+            --dark-bg-primary: #12121F; --dark-bg-secondary: #1A1A2E; --dark-bg-tertiary: #24243D;
+            --text-primary: #E0E0E0; --text-secondary: #A0A0B0; --border-color: #33334D;
+            --shadow-light: rgba(0, 198, 255, 0.1); --border-radius: 8px; --font-main: 'Poppins', sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: var(--font-main); background-color: var(--dark-bg-primary); color: var(--text-primary);
+            line-height: 1.7; display: flex; flex-direction: column; align-items: center;
+            justify-content: center; min-height: 100vh; text-align: center; padding: 20px;
+            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+        }
+        .success-container {
+            background-color: var(--dark-bg-secondary); padding: 45px;
+            border-radius: var(--border-radius); box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            max-width: 650px; width: 100%; border-top: 5px solid var(--success-color);
+        }
+        .success-icon {
+            font-size: 6em; color: var(--success-color); margin-bottom: 25px;
+            animation: popIn 0.5s ease-out;
+        }
+        @keyframes popIn { 0% { transform: scale(0.5); opacity: 0; } 80% { transform: scale(1.1); } 100% { transform: scale(1); opacity: 1; } }
+        .success-title { font-size: 2.5em; color: var(--success-color); font-weight: 700; margin-bottom: 20px; }
+        .success-message { font-size: 1.2em; margin-bottom: 30px; color: var(--text-secondary); }
+        .order-details-summary {
+            margin-bottom: 35px; padding: 20px; background-color: var(--dark-bg-tertiary);
+            border: 1px dashed var(--border-color); border-radius: var(--border-radius); text-align: left;
+        }
+        .order-details-summary h4 {
+            color: var(--primary-blue); font-size: 1.3em; margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 10px;
+        }
+        .order-details-summary p { margin: 8px 0; color: var(--text-secondary); }
+        .order-details-summary p strong { color: var(--text-primary); }
+        .btn-home, .btn-telegram-status {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: #fff; padding: 14px 30px; text-decoration: none;
+            border-radius: var(--border-radius); font-weight: 600;
+            transition: background 0.3s ease, transform 0.2s ease; margin: 5px;
+        }
+        .btn-home { background: linear-gradient(90deg, var(--primary-blue), var(--secondary-blue)); box-shadow: 0 4px 15px var(--shadow-light); }
+        .btn-home:hover { background: linear-gradient(90deg, var(--secondary-blue), var(--primary-blue)); transform: translateY(-3px); }
+        .btn-telegram-status { background-color: #27A7E7; }
+        .btn-telegram-status:hover { background-color: #1E88C9; transform: translateY(-3px); }
+        .actions-footer { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-icon"><i class="fas fa-check-circle"></i></div>
+        <h1 class="success-title">Pesanan Berhasil!</h1>
+        <p class="success-message" id="customerMessageEl">Terima kasih, [Nama Pelanggan]! Pesanan Anda telah diterima dan akan segera kami proses. Detail konfirmasi dan aktivasi layanan akan dikirimkan ke email Anda dan/atau melalui notifikasi Telegram jika ID Anda terdaftar.</p>
+        
+        <div class="order-details-summary">
+            <h4><i class="fas fa-receipt"></i> Ringkasan Pesanan Anda:</h4>
+            <p><strong>ID Pesanan:</strong> <span id="summaryOrderId">Memuat...</span></p>
+            <p><strong>Produk:</strong> <span id="summaryProductNameEl">Nama Produk</span></p>
+            <p><strong>Total Pembayaran:</strong> <span id="summaryProductPriceEl">Rp 0</span></p>
+            <p id="paymentMethodInfo" style="display:none;"><strong>Metode Pembayaran:</strong> <span id="summaryPaymentMethod"></span></p>
+        </div>
+
+        <div class="actions-footer">
+            <a href="./index.html" class="btn-home"><i class="fas fa-home"></i> Kembali ke Beranda</a>
+            <a href="#" class="btn-telegram-status" id="telegramStatusLink" style="display:none;" target="_blank">
+                <i class="fab fa-telegram-plane"></i> Cek Status di Telegram
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productName = decodeURIComponent(urlParams.get('product_name') || 'Layanan GIYU HOST');
+            const productPrice = urlParams.get('price') || '0';
+            const customerName = decodeURIComponent(urlParams.get('customer_name') || 'Pelanggan GIYU HOST');
+            const orderId = urlParams.get('order_id') || 'N/A';
+            const paymentMethod = urlParams.get('payment_method');
+            const telegramBotUsername = 'wanzofc_api_Bot'; 
+
+            document.getElementById('summaryOrderId').textContent = orderId !== 'N/A' ? `#${orderId.slice(-6).toUpperCase()}` : 'N/A';
+            document.getElementById('summaryProductNameEl').textContent = productName;
+            document.getElementById('summaryProductPriceEl').textContent = `Rp ${parseInt(productPrice).toLocaleString('id-ID')}`;
+            
+            const customerMessageEl = document.getElementById('customerMessageEl');
+            let messageText = customerMessageEl.textContent.replace('[Nama Pelanggan]', customerName);
+
+            const paymentMethodInfoP = document.getElementById('paymentMethodInfo');
+            const summaryPaymentMethodSpan = document.getElementById('summaryPaymentMethod');
+            const telegramStatusLink = document.getElementById('telegramStatusLink');
+
+            if (paymentMethod) {
+                summaryPaymentMethodSpan.textContent = paymentMethod.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                paymentMethodInfoP.style.display = 'block';
+                if (paymentMethod.toUpperCase().includes('ORKUT_QRIS') && orderId !== 'N/A') {
+                     messageText += ` Status pembayaran QRIS Anda akan diperbarui secara otomatis atau bisa dicek melalui Telegram.`;
+                    telegramStatusLink.href = `https://t.me/${telegramBotUsername}?start=order_${orderId}`;
+                    telegramStatusLink.style.display = 'inline-flex';
+                }
+            }
+            customerMessageEl.textContent = messageText;
+        });
+    </script>
+</body>
+</html>
